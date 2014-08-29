@@ -3,6 +3,8 @@
   {description, ""},
   {applications, [kernel, stdlib]},
   {vsn, "1.0"},
+  {applications, [kernel, stdlib]},
+  {modules, []},
   {registered, []},
   {env, []},
   {applications, []}
