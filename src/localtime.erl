@@ -224,14 +224,18 @@ tr_char([H|T], From, To, Acc) ->
    end.
 
 -define(SPACE_CHAR, 32).
-get_timezone(TimeZone) ->
+get_timezone(TimeZone) when is_binary(TimeZone) ->
+    get_timezone(erlang:binary_to_list(TimeZone));
+get_timezone(TimeZone) when is_list(TimeZone) ->
    TimeZoneNoSpaces = tr_char(TimeZone, ?SPACE_CHAR, $_),
    case dict:find(TimeZoneNoSpaces, ?tz_index)  of
       error ->
          TimeZoneNoSpaces;
       {ok, [TZName | _]} ->
             TZName
-   end.
+   end;
+get_timezone(_) ->
+    throw({error, "Timezone should be string/binary"}).
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
