@@ -17,6 +17,7 @@
      ,tz_name/2
      ,tz_shift/2
      ,tz_shift/3
+     ,fmt_shift/1
   ]).
 
 % utc_to_local(UtcDateTime, Timezone) -> LocalDateTime | [LocalDateTime, DstLocalDateTime] | {error, ErrDescr}
