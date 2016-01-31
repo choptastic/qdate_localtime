@@ -20,6 +20,7 @@
      ,get_timezone/1
      ,list_timezones/0
      ,adjust_datetime/2
+     ,fmt_shift/1
   ]).
 
 % utc_to_local(UtcDateTime, Timezone) -> LocalDateTime | [LocalDateTime, DstLocalDateTime] | {error, ErrDescr}
@@ -214,6 +215,8 @@ fmt_shift({'+', H, M}) ->
    H * 60 + M;
 fmt_shift({'-', H, M}) ->
    -(H * 60 + M);
+fmt_shift(0) ->
+   0;
 fmt_shift(Any) ->
    throw(Any).
 
@@ -231,14 +234,18 @@ tr_char([H|T], From, To, Acc) ->
    end.
 
 -define(SPACE_CHAR, 32).
-get_timezone_inner(TimeZone) ->
+get_timezone_inner(TimeZone) when is_binary(TimeZone) ->
+    get_timezone_inner(erlang:binary_to_list(TimeZone));
+get_timezone_inner(TimeZone) when is_list(TimeZone) ->
    TimeZoneNoSpaces = tr_char(TimeZone, ?SPACE_CHAR, $_),
    case dict:find(TimeZoneNoSpaces, ?tz_index)  of
       error ->
          TimeZoneNoSpaces;
       {ok, [TZName | _]} ->
             TZName
-   end.
+   end;
+get_timezone_inner(_) ->
+    throw({error, "Timezone should be string/binary"}).
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
