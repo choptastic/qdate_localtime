@@ -1,0 +1,12 @@
+{application, 'qdate_localtime',
+ [
+  {description, "Erlang library for conversion from one local time to another (forked specifically for qdate compatibility)"},
+  {vsn, "1.1.0"},
+  {applications, [kernel, stdlib]},
+  {modules, []},
+  {registered, []},
+  {env, []},
+  {maintainers, ["Jesse Gumm", "Heinz N. Gies"]},
+  {licenses, ["BSD"]},
+  {links, [{"Github", "https://github.com/choptastic/qdate_localtime"}]}
+ ]}.

@@ -1,3 +1,13 @@
+## NOTE
+
+This is a fork of
+[erlang_localtime](https://github.com/dmitryme/erlang_localtime), modified
+specifically for compatibility with
+[qdate](https://github.com/choptastic/qdate).  The two are mostly compatible,
+but have diverged a bit over the years.  The qdate tests will not pass if the
+original erlang_localtime dependency is used due to some subtle differences to
+attempt to make qdate a little bit smarter.
+
 #### Public exports
 
 * utc_to_local(DateTime, Timezone) - converts UTC time to local according to specified Timezone
