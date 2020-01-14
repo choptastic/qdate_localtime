@@ -464,6 +464,10 @@ sub on_to_day_of_month {
     if ($on =~ m/^(\w+)>=(\d+)$/) {
       $desired_dow = $dow_from_name{$1}; my $desired_day = $2;
       $time_base = timelocal(0, 0, 0, $desired_day, $month, $year);
+    }
+    elsif ($on =~ m/^(\w+)<=(\d+)$/) {
+      $desired_dow = $dow_from_name{$1}; my $desired_day = $2;
+      $time_base = timelocal(0, 0, 0, $desired_day, $month, $year);
     } elsif ($on =~ m/^last(\w+)$/) {
       $desired_dow = $dow_from_name{$1};
       # One week before the beginning of the next month.
@@ -472,6 +476,7 @@ sub on_to_day_of_month {
       die "match $on failed";
     }
     ($day, my $dow) = (localtime($time_base))[3,6];
+
     if ($dow != $desired_dow) { $day += (DPW + $desired_dow - $dow) % DPW; }
   }
 
@@ -511,6 +516,7 @@ sub last_active_epoch {
   }
 
   my $day = on_to_day_of_month($on, $year, $month);
-  return timelocal(0, 0, 0, $day, $month, $year);
+  #warn "here from: $from, to: $to, in: $in, on: $on, day: $day, month: $month, year: $year\n";
+  return timelocal_nocheck(0, 0, 0, $day, $month, $year);
 }
 
