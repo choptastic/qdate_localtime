@@ -13,8 +13,6 @@
       check/2
    ]).
 
--compile([export_all]).
-
 
 % check(DateTime, TimeZone) -> is_in_dst | is_not_in_dst | ambiguous_time | time_not_exists
 %  DateTime = DateTime()
@@ -23,9 +21,13 @@ check(DateTime, Timezone) when is_list(Timezone) ->
     case lists:keyfind(localtime:get_timezone(Timezone), 1, ?tz_database) of
         false ->
             {error, unknown_tz};
-        TZ -> 
+        TZ ->
             check(DateTime, TZ)
     end;
+
+check(_DateTime, {_, _, _, _, _, _DstStartRule = undef, {0, 0}, _DstEndRule = undef, {0, 0}}) ->
+  is_not_in_dst;
+
 check({Date = {Year, _, _},Time}, {_, _, _, _Shift, DstShift, DstStartRule, DstStartTime, DstEndRule, DstEndTime}) ->
    DstStartDay = get_dst_day_of_year(DstStartRule, Year),
    DstEndDay = get_dst_day_of_year(DstEndRule, Year),
