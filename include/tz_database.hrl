@@ -35,6 +35,7 @@
       %%   Discarded excess rules for Zone Africa/El_Aaiun.
       %%   Moving rule to beginning of day for Zone America/Godthab.
       %%   Moving rule to beginning of day for Zone America/Godthab.
+      %%   Rounded timezone rules of Asia/Tehran to week 3 in march and september
 
       {"Africa/Abidjan",{"GMT","GMT"},undef,0,0,undef,{0,0},undef,{0,0}},
       {"Africa/Accra",{"GMT","GMT"},undef,0,0,undef,{0,0},undef,{0,0}},
@@ -346,7 +347,7 @@
       {"Asia/Taipei",{"CST","CST"},undef,480,0,undef,{0,0},undef,{0,0}},
       {"Asia/Tashkent",{"UZT","UZT"},undef,300,0,undef,{0,0},undef,{0,0}},
       {"Asia/Tbilisi",{"GET","GET"},undef,240,0,undef,{0,0},undef,{0,0}},
-      {"Asia/Tehran",{"IRST","IRST"},{"IRDT","IRDT"},210,60,undef,{0,0},undef,{0,0}},
+      {"Asia/Tehran",{"IRST","IRST"},{"IRDT","IRDT"},210,60,{3,sat,mar},{0,0},{3,sat,sep},{0,0}},
       {"Asia/Tel_Aviv",{"IST","IST"},{"IDT","IDT"},120,60,{4,fri,mar},{2,0},{last,sun,oct},{2,0}},
       {"Asia/Thimbu",{"BTT","BTT"},undef,360,0,undef,{0,0},undef,{0,0}},
       {"Asia/Thimphu",{"BTT","BTT"},undef,360,0,undef,{0,0},undef,{0,0}},
