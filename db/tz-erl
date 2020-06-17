@@ -145,6 +145,14 @@ sub process_data {
   }
 }
 
+my (@mon_to_name, %mon_from_name, @dow_to_name, %dow_from_name);
+INIT {
+  @mon_to_name = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+  %mon_from_name = map { $mon_to_name[$_] => $_ } (0..$#mon_to_name);
+  @dow_to_name = qw(Sun Mon Tue Wed Thu Fri Sat);
+  %dow_from_name= map { $dow_to_name[$_] => $_ } (0..$#dow_to_name);
+}
+
 # Converts an offset in the format "[+-]?HH:MM" or "[+-]?HH" into minutes.
 # For example, "2:00" -> 120, "-0:30" -> -30, "+5" -> 300.
 sub offset_minutes {
@@ -217,6 +225,14 @@ sub rule_line {
       }
     } elsif ($on =~ m/^last(\w+)$/) {
       $rule = [ 'last', lc($1), lc($in) ]; # e.g. [ 'last', 'sun', 'apr' ]
+    } elsif ($on =~ m/(\d+)$/) {
+      my $day = $1;
+      my $month = $mon_from_name{$in};
+      my $dow = (localtime(timelocal(0, 0, 0, $day, $month, $current_year)))[6];
+      my $artificial_week = int(($day - 1 + DPW) / 7);
+      $rule = [ $artificial_week, lc($dow_to_name[$dow]), lc($in) ];
+      warn "Translated $in $on to [@$rule]";
+      push(@problem, "Artificially put $in $on at [@$rule] in Rule $name.");
     } else {
       warn "no match for $on in rule $l";
       push(@problem, "Ignored $in $on in Rule $name.");
@@ -264,7 +280,7 @@ sub zone_line {
          (($until_month > $current_month) ||
           (($until_month == $current_month) &&
            ($until_day >= $current_day))))) {
-      "future until \"$until\" not handled";
+      print "future until \"$until\" not handled";
     }
     return;
   }
@@ -349,11 +365,17 @@ sub zone_line {
 
 sub zonename {
   my ($format, $letter, $dst) = @_;
+  my $zname = "";
   if (defined($dst) && $format =~ m,/,) {
     my @format = split(m,/,, $format);
-    return $format[$dst];
+    $zname = $format[$dst];
   } else {
-    return sprintf($format, $letter eq '-' ? '' : $letter);
+    $zname = sprintf($format, $letter eq '-' ? '' : $letter);
+  }
+  if ($zname =~ m/^(\-|\+).*/) {
+    return "UTC" . $zname;
+  } else {
+    return $zname;
   }
 }
 
@@ -428,14 +450,6 @@ sub link_line {
   }
 }
 
-my (@mon_to_name, %mon_from_name, @dow_to_name, %dow_from_name);
-INIT {
-  @mon_to_name = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
-  %mon_from_name = map { $mon_to_name[$_] => $_ } (0..$#mon_to_name);
-  @dow_to_name = qw(Sun Mon Tue Wed Thu Fri Sat);
-  %dow_from_name= map { $dow_to_name[$_] => $_ } (0..$#dow_to_name);
-}
-
 sub split_ymd {
   my ($ymd) = @_;
   $ymd =~ m/^(\d+)(?:\s+(\w+)(?:\s+(\d+)))?/
@@ -464,6 +478,11 @@ sub on_to_day_of_month {
     if ($on =~ m/^(\w+)>=(\d+)$/) {
       $desired_dow = $dow_from_name{$1}; my $desired_day = $2;
       $time_base = timelocal(0, 0, 0, $desired_day, $month, $year);
+    } elsif ($on =~ m/(\w+)<=(\d+)$/) {
+      $desired_dow = $dow_from_name{$1}; my $desired_day = $2;
+      $time_base = timelocal(0, 0, 0, $desired_day, $month, $year);
+      ($day, my $dow) = (localtime($time_base))[3,6];
+      if ($dow != $desired_dow) { $day -= (DPW + $dow - $desired_dow) % DPW; }
     } elsif ($on =~ m/^last(\w+)$/) {
       $desired_dow = $dow_from_name{$1};
       # One week before the beginning of the next month.
@@ -511,6 +530,6 @@ sub last_active_epoch {
   }
 
   my $day = on_to_day_of_month($on, $year, $month);
-  return timelocal(0, 0, 0, $day, $month, $year);
+  return timelocal_nocheck(0, 0, 0, $day, $month, $year);
 }
 
