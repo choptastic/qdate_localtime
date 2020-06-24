@@ -257,8 +257,8 @@ tr_char_test() ->
 
 tz_name_test() ->
     ?assertEqual({"CET", "CET"}, tz_name({{2008,12,10},{15,30,0}}, "Europe/Amsterdam")),
-    ?assertEqual({"IRST", "IRST"}, tz_name({{2008,12,10},{15,30,0}}, "Asia/Tehran")),
-    ?assertEqual({"IRDT", "IRDT"}, tz_name({{2020,5,4},{15,30,0}}, "Asia/Tehran")).
+    ?assertEqual({"+0330","+0330"}, tz_name({{2008,12,10},{15,30,0}}, "Asia/Tehran")),
+    ?assertEqual({"+0430","+0430"}, tz_name({{2020,5,4},{15,30,0}}, "Asia/Tehran")).
 
 
 get_timezone_test() ->
