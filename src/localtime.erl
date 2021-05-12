@@ -255,6 +255,12 @@ tr_char_test() ->
    ?assertEqual("AB_DE", tr_char("AB DE", ?SPACE_CHAR, $_)),
    ?assertEqual("A_C_E", tr_char("A C E", ?SPACE_CHAR, $_)).
 
+tz_name_test() ->
+    ?assertEqual({"CET", "CET"}, tz_name({{2008,12,10},{15,30,0}}, "Europe/Amsterdam")),
+    ?assertEqual({"IRST", "IRST"}, tz_name({{2008,12,10},{15,30,0}}, "Asia/Tehran")),
+    ?assertEqual({"IRDT", "IRDT"}, tz_name({{2020,5,4},{15,30,0}}, "Asia/Tehran")).
+
+
 get_timezone_test() ->
    ?assertEqual("America/Los_Angeles", get_timezone("America/Los Angeles")).
 
