@@ -244,8 +244,8 @@ get_timezone_inner(TimeZone) when is_list(TimeZone) ->
       {ok, [TZName | _]} ->
             TZName
    end;
-get_timezone_inner(_) ->
-    throw({error, "Timezone should be string/binary"}).
+get_timezone_inner(TZ) ->
+    throw({error, "Timezone should be string/binary", {provided_timezone, TZ}}).
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
