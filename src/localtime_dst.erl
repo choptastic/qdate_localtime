@@ -6,7 +6,6 @@
 -author("Dmitry Melnikov <dmitryme@gmail.com>").
 
 -include("tz_database.hrl").
--include("tz_index.hrl").
 
 -export(
    [
