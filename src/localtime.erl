@@ -6,7 +6,6 @@
 -author("Dmitry Melnikov <dmitryme@gmail.com>").
 
 -include("tz_database.hrl").
--include("tz_index.hrl").
 
 -export(
   [
@@ -139,6 +138,7 @@ tz_name(LocalDateTime, Timezone) ->
             is_not_in_dst ->
                StdName;
             ambiguous_time ->
+               error_logger:info_msg("TZ Name: ~p, ~p",[StdName, DstName]),
                {StdName, DstName};
             time_not_exists ->
                unable_to_detect
@@ -197,7 +197,7 @@ get_timezone(TimeZone) ->
     get_timezone_inner(TimeZone).
 
 list_timezones() ->
-    dict:fetch_keys(?tz_index).
+    tz_index:all().
 
 % =======================================================================
 % privates
@@ -238,11 +238,11 @@ get_timezone_inner(TimeZone) when is_binary(TimeZone) ->
     get_timezone_inner(erlang:binary_to_list(TimeZone));
 get_timezone_inner(TimeZone) when is_list(TimeZone) ->
    TimeZoneNoSpaces = tr_char(TimeZone, ?SPACE_CHAR, $_),
-   case dict:find(TimeZoneNoSpaces, ?tz_index)  of
+   case tz_index:lookup(TimeZoneNoSpaces) of
       error ->
-         TimeZoneNoSpaces;
-      {ok, [TZName | _]} ->
-            TZName
+        TimeZoneNoSpaces;
+      [TZName | _] ->
+        TZName
    end;
 get_timezone_inner(TZ) ->
     throw({error, "Timezone should be string/binary", {provided_timezone, TZ}}).
