@@ -34,11 +34,21 @@ build_index() ->
 
 
 build_function_clauses(List) ->
-    Clauses = lists:map(fun({K, V}) ->
+    Clauses = lists:map(fun({K0, V0}) ->
+        {K, V} = hack_fix_utc({K0, V0}),
         io_lib:format("lookup(~p) -> ~p", [K, V])
     end, List),
     [lists:join(";\n", Clauses), ";\n",
      "lookup(_) -> error."].
+
+
+hack_fix_utc({"UTC", TZs}) ->
+    MainTZ = "Etc/UTC",
+    NoMainTZ = TZs -- [MainTZ],
+    NewTZs = [MainTZ | NoMainTZ],
+    {"UTC", NewTZs};
+hack_fix_utc({K, V}) ->
+    {K, V}.
 
 build_all_function(List) ->
     Keys = [K || {K, _} <- List],
