@@ -2,3 +2,4 @@ ebin/
 _build/
 *~
 src/tz_index.erl
+*.sw?
