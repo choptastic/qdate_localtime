@@ -6,3 +6,6 @@ check:
 
 dialyzer:
 	./rebar3 dialyzer
+
+publish:
+	./rebar3 hex publish

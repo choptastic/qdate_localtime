@@ -138,7 +138,6 @@ tz_name(LocalDateTime, Timezone) ->
             is_not_in_dst ->
                StdName;
             ambiguous_time ->
-               error_logger:info_msg("TZ Name: ~p, ~p",[StdName, DstName]),
                {StdName, DstName};
             time_not_exists ->
                unable_to_detect
