@@ -2,7 +2,7 @@
 %% @author  Dmitry S. Melnikov (dmitryme@gmail.com)
 %% @copyright 2010 Dmitry S. Melnikov
 
--include("include/tz_database.hrl").
+-include("../include/tz_database.hrl").
 -define(out, "src/tz_index.erl").
 
 build_tzlist(TzName, Name, Dict) ->
@@ -26,7 +26,7 @@ build_index() ->
    AllFunction = build_all_function(List),
    Header = "-module(tz_index).\n-export([lookup/1, all/0]).",
    Body = [Header, "\n\n", LookupFunction, "\n\n", AllFunction],
-   file:write_file(?out, Body).
+   ok = file:write_file(?out, Body).
 
 
 %   {ok, File} = file:open("tz_index.hrl", [write]),
@@ -46,4 +46,5 @@ build_all_function(List) ->
 
 %% So this can be run from escript:
 main(_Args) ->
-   build_index().
+    io:format("Generating qdate_localtime module: tz_index.erl\n"),
+    build_index().
