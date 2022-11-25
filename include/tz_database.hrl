@@ -535,7 +535,7 @@
       {"Indian/Mauritius",{"MUT","MUT"},undef,240,0,undef,{0,0},undef,{0,0}},
       {"Indian/Mayotte",{"EAT","EAT"},undef,180,0,undef,{0,0},undef,{0,0}},
       {"Indian/Reunion",{"RET","RET"},undef,240,0,undef,{0,0},undef,{0,0}},
-      {"Iran",{"IRST","IRST"},undef,210,60,undef,{0,0},undef,{0,0}},
+      {"Iran",{"IRST","IRST"},undef,210,0,undef,{0,0},undef,{0,0}},
       {"Israel",{"IST","IST"},{"IDT","IDT"},120,60,{4,fri,mar},{2,0},{last,sun,oct},{2,0}},
       {"Jamaica",{"EST","EST"},undef,-300,0,undef,{0,0},undef,{0,0}},
       {"Japan",{"JST","JST"},undef,540,0,undef,{0,0},undef,{0,0}},
