@@ -255,10 +255,12 @@ tr_char_test() ->
    ?assertEqual("A_C_E", tr_char("A C E", ?SPACE_CHAR, $_)).
 
 tz_name_test() ->
-    ?assertEqual({"CET", "CET"}, tz_name({{2008,12,10},{15,30,0}}, "Europe/Amsterdam")),
-    ?assertEqual({"IRST", "IRST"}, tz_name({{2008,12,10},{15,30,0}}, "Asia/Tehran")),
-    ?assertEqual({"IRDT", "IRDT"}, tz_name({{2020,5,4},{15,30,0}}, "Asia/Tehran")).
-
+   ?assertEqual({"CET", "CET"}, tz_name({{2008,12,10},{15,30,0}}, "Europe/Amsterdam")),
+   %%% No DST in Iran
+   ?assertEqual({"IRST", "IRST"}, tz_name({{2008,12,10},{15,30,0}}, "Asia/Tehran")),
+   ?assertEqual({"IRST", "IRST"}, tz_name({{2020,5,4},{15,30,0}}, "Asia/Tehran")),
+   ?assertEqual({"IRST", "IRST"}, tz_name({{2008,12,10},{15,30,0}}, "Iran")),
+   ?assertEqual({"IRST", "IRST"}, tz_name({{2020,5,4},{15,30,0}}, "Iran")).
 
 get_timezone_test() ->
    ?assertEqual("America/Los_Angeles", get_timezone("America/Los Angeles")).
