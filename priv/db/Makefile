@@ -14,4 +14,5 @@ $(TZDIR): tzdata-latest.tar.gz
 tzdata-latest.tar.gz:
 	curl -O "ftp://ftp.iana.org/tz/tzdata-latest.tar.gz"
 
-
+clean:
+	@(rm -fr tzdata *.tar.gz tzout *~)
