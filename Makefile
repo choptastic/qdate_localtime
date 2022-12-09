@@ -4,6 +4,8 @@ all: rebar3
 check: rebar3
 	./rebar3 eunit
 
+test: check
+
 dialyzer: rebar3
 	./rebar3 dialyzer
 
