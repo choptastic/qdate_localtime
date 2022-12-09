@@ -522,6 +522,9 @@ sub last_active_epoch {
 
   my $day = on_to_day_of_month($on, $year, $month);
   print "On=$on, Year=$year, Month=$month ====> Day=$day\n";
-  return timelocal_nocheck(0, 0, 0, $day, $month, $year);
+  ## changing the below call to timelocal_nocheck stops the crash, but it feels wrong
+  ## especially since without it, it seems to produce a lot of "redundant" error messages
+  ## I don't have time to explore this now, but I'll come back to it
+  return timelocal(0, 0, 0, $day, $month, $year);
 }
 
