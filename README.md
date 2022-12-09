@@ -1,21 +1,21 @@
 ## NOTE
 
-This is a fork of
-[erlang_localtime](https://github.com/dmitryme/erlang_localtime), modified
-specifically for compatibility with
+This is a fork of the excellent library,
+[erlang_localtime](https://github.com/dmitryme/erlang_localtime). The purpose
+of this fork is specifically for compatibility with
 [qdate](https://github.com/choptastic/qdate).  The two are mostly compatible,
-but have diverged a bit over the years.  The qdate tests will not pass if the
-original erlang_localtime dependency is used due to some subtle differences to
-attempt to make qdate a little bit smarter.
+but have diverged slightly over the years.  The qdate tests will not pass if the
+original `erlang_localtime dependency` is used due to some subtle differences
+to attempt to make qdate a little bit smarter.
 
 #### Public exports
 
-* utc_to_local(DateTime, Timezone) - converts UTC time to local according to specified Timezone
-* local_to_utc(DateTime, Timezone) - converts local time to UTC
-* local_to_local(DateTime, TimezoneFrom, TimezoneTo) - converts local time to local
-* tz_name(DateTime, Timezone) - returns a timezone name (E.g. MSK, MSD, etc)
-* tz_shift(DateTime, Timezone) - returns time difference between local datetime and GMT
-* tz_shift(DateTime, TimezoneFrom, TimezoneTo) - returns time difference between local datetime and required timezone
+* `utc_to_local(DateTime, Timezone)` - converts UTC time to local according to specified Timezone
+* `local_to_utc(DateTime, Timezone)` - converts local time to UTC
+* `local_to_local(DateTime, TimezoneFrom, TimezoneTo)` - converts local time to local
+* `tz_name(DateTime, Timezone)` - returns a timezone name (E.g. MSK, MSD, etc)
+* `tz_shift(DateTime, Timezone)` - returns time difference between local datetime and GMT
+* `tz_shift(DateTime, TimezoneFrom, TimezoneTo)` - returns time difference between local datetime and required timezone
 Where
 DateTime = {date(), time()}
 TimeZone(To, From) = String(). E.g. “Europe/Moscow”, “America/NewYork”. Or abbreviations "MSK", "MSD", etc. Note:

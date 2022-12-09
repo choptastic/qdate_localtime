@@ -459,11 +459,16 @@ sub on_to_day_of_month {
   my $day;
   if ($on =~ m/^\d+$/) {
     $day = $on;
+	print "Day extracted via regex to: $day\n";
   } else {
     my ($desired_dow, $time_base);
     if ($on =~ m/^(\w+)>=(\d+)$/) {
       $desired_dow = $dow_from_name{$1}; my $desired_day = $2;
       $time_base = timelocal(0, 0, 0, $desired_day, $month, $year);
+	  print "Regex: $on => desired_dow: $desired_dow. Time_base: $time_base\n";
+    } elsif ($on =~ m/^(\w+)<=(\d+)$/) {
+	  $desired_dow = $dow_from_name{$1}; my $desired_day = $2;
+	  $time_base = timelocal(0, 0, 0, $desired_day, $month, $year);
     } elsif ($on =~ m/^last(\w+)$/) {
       $desired_dow = $dow_from_name{$1};
       # One week before the beginning of the next month.
@@ -472,7 +477,12 @@ sub on_to_day_of_month {
       die "match $on failed";
     }
     ($day, my $dow) = (localtime($time_base))[3,6];
-    if ($dow != $desired_dow) { $day += (DPW + $desired_dow - $dow) % DPW; }
+	print "Current Day: $day\n";
+	print "Comparing $dow = $desired_dow\n";
+    if ($dow != $desired_dow) {
+		$day += (DPW + $desired_dow - $dow) % DPW;
+	}
+	print "After comparison: Current Day: $day\n";
   }
 
   return $day;
@@ -511,6 +521,7 @@ sub last_active_epoch {
   }
 
   my $day = on_to_day_of_month($on, $year, $month);
-  return timelocal(0, 0, 0, $day, $month, $year);
+  print "On=$on, Year=$year, Month=$month ====> Day=$day\n";
+  return timelocal_nocheck(0, 0, 0, $day, $month, $year);
 }
 
