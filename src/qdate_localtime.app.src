@@ -6,7 +6,6 @@
   {modules, []},
   {registered, []},
   {env, []},
-  {maintainers, ["Jesse Gumm", "Heinz N. Gies"]},
-  {licenses, ["BSD"]},
+  {licenses, ["Apache-2.0"]},
   {links, [{"Github", "https://github.com/choptastic/qdate_localtime"}]}
  ]}.
